@@ -1,10 +1,15 @@
+/****************************
+ * COMP 2011 - Fall 2018
+ * Lab 3 - Pi Estimation
+ ****************************/
+
+
 #include <iostream>
 #include <cstdlib>    // srand, rand
 #include <ctime>      // time
 #include <cmath>
 
 using namespace std;
-
 
 /* Generate a random real number between [0, 1)
  * Paramters:
@@ -18,6 +23,7 @@ double random_number()
     return r;
     // add your code here
     // ** RAND_MAX is a constant defined in the standard library
+    //    equal to the maximum value returned by rand **
     
 }
 
@@ -37,7 +43,8 @@ bool is_in_circle(double x, double y)
     y=random_number();
     double dis;
     dis = sqrt(x*x + y*y);
-    return (dis <= 1) ? 1 : 0;
+    return dis <= 1;
+    // add your code here
 }
 
 /* Estimate the value of pi and find the number of raindrops inside the circle
@@ -49,9 +56,15 @@ bool is_in_circle(double x, double y)
  */
 void estimate_pi(int n, int& num_inside, double& pi)
 {
-    double x,y;
-    pi += 4.0 * num_inside/n;
-    for (int num_inside = 0;is_in_circle(x,y)>pi; num_inside+=1);
+    double x=0.0,y = 0.0;
+    
+    for (int m = 0 ; m<=n ; m+=1)
+    {
+        if (is_in_circle(x,y))
+            num_inside+=1;
+    }
+    pi = 4.0 * num_inside/n;
+    
     // add your code here
     // **your code must call the two functions: random_number and is_in_circle**
 }
@@ -83,13 +96,12 @@ int main()
     estimate_pi(n,num_inside,pi);
     if (n == 0)
         cout << "Bye Bye!";
-
+    
     else cout << "The number of raindrops inside the circle =" << num_inside << endl;
     cout << "The estimated pi =" << pi;
+    // add your code here
+    // ** your code must call the function estimate_pi() **
+    
     
     return 0;
 }
-
-
-
-
