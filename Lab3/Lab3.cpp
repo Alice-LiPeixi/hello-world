@@ -19,12 +19,10 @@ using namespace std;
  */
 double random_number()
 {
-    double r = ((double) rand() / (RAND_MAX));
-    return r;
+    return (double) rand() / (RAND_MAX);
     // add your code here
     // ** RAND_MAX is a constant defined in the standard library
-    //    equal to the maximum value returned by rand **
-    
+    // equal to the maximum value returned by rand **
 }
 
 /* Returns whether the point is inside the circle
@@ -39,10 +37,10 @@ double random_number()
  */
 bool is_in_circle(double x, double y)
 {
-    x=random_number();
-    y=random_number();
+    x = random_number();
+    y = random_number();
     double dis;
-    dis = sqrt(x*x + y*y);
+    dis = sqrt(x * x + y * y);
     return dis <= 1;
     // add your code here
 }
@@ -56,14 +54,15 @@ bool is_in_circle(double x, double y)
  */
 void estimate_pi(int n, int& num_inside, double& pi)
 {
-    double x=0.0,y = 0.0;
+    double x = 0.0, y = 0.0;
     
-    for (int m = 0 ; m<=n ; m+=1)
+    for (int m = 0; m <= n; m += 1)
     {
-        if (is_in_circle(x,y))
-            num_inside+=1;
+        if (is_in_circle(x,y)) {
+            num_inside += 1;
+        }
     }
-    pi = 4.0 * num_inside/n;
+    pi = 4.0 * num_inside / n;
     
     // add your code here
     // **your code must call the two functions: random_number and is_in_circle**
@@ -93,15 +92,16 @@ int main()
     cout << "How many raindrops are there inside the square?" <<endl;
     cout << "Enter the number (n > 0) (enter 0 to exit):";
     cin >> n;
-    estimate_pi(n,num_inside,pi);
-    if (n == 0)
+    estimate_pi(n, num_inside, pi);
+    if (n == 0) {
         cout << "Bye Bye!";
-    
-    else cout << "The number of raindrops inside the circle =" << num_inside << endl;
+    } else {
+        cout << "The number of raindrops inside the circle =" << num_inside << endl;
+    }
     cout << "The estimated pi =" << pi;
+
     // add your code here
     // ** your code must call the function estimate_pi() **
-    
     
     return 0;
 }
