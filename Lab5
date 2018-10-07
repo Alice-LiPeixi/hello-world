@@ -1,5 +1,37 @@
 /*
  * Lab 5 Skeleton
+ 
+This lab implements a classic two-player battleship game. It helps you to practice the use of 2D array data structure and function, and you must use them in your code. You may download the demo program for Windows (updated) to try it out.
+
+The game runs as follows:
+
+1.Game board is 10 x 10
+
+2.Each player has a fleet of 5 battle ships: Carrier, Battleship, Destroyer, Submarine and Patrol boat. The sizes of the ships follow the popular Hasbro version (as described in the pdf BattleShip_(2002).PDF).
+
+3.Lab 5 modifies the original battle ship game as a single player game. Computer places all ships at the beginning of the game, one-by-one
+(1)Pick a random position in game board
+(2)Pick a random direction for the ship (either horizontal or vertical)
+(3)Put the ship
+
+Each boat should be put in a valid location, e.g. within the boundary of the game board, not overlapping with other ships. Fig 4 of BattleShip_(2002).PDF gives an example of valid boat arrangement on the board.
+
+4.Once ships are set, it's hidden from the player. The player starts to shot. For each shot, player knows whether it's a HIT or MISS. This may give player hint on next shot.
+5.Game continues until the player sinks all ships. Count how many shots the player uses.
+
+The game runs in either DEBUG or GAME mode. Debug mode shows the ships to player (actually the programmer) for easy debugging. Game mode hides the ships and presents an intuitive visualization of the board.
+TASKS
+You can start with the given skeleton code. Read it carefully to understand the data structures (i.e. array) and general program structure. Implement the below 3 functions:
+
+void placeShip(char map[][WIDTH], int size);    // for item 3 as described above
+bool isHit(char map[][WIDTH], int col, int row); // for item 4
+bool isGameOver(const char map[][WIDTH]); 	// for item 5
+
+More details of the functions can be found in skeleton code.
+
+NOTE:
+Your game output does not necessarily to be exactly the same as sample program. Make the interface simple, clear, and fun that even a primary student can understand the game instructions.
+You can start from scratch (without using skeleton code) if you feel capable to do so.
  *
  */
 
