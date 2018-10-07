@@ -77,62 +77,64 @@ void printMap(const char map[][WIDTH], bool debug = true) {
 // You can always assume the map has enough room to place the battle ship when the function is being called.
 void placeShip(char map[][WIDTH], int size) {
     //add your code here
-  int x = 0, y = 0;
-  int pos = rand() % (2);
-  x = rand() % (10);
-  y = rand() % (10);
-
-  x = 7;
-  y = 8;
-  pos = 1;
-
-  cout << "x, y, pos, size: " << x << ", " << y << ", " << pos << ", " << size << endl;
-
+  int x, y, pos;
   int shipPosition[size][2];
 
-  bool hasConfict = false;
-  for (int i = 0; i < size; i++) {
-    bool singleConflict = true;
-    if (pos == 0) {
-      if (y + i < WIDTH) {
-        if (map[x][y + i] != SHIP) {
-          // map[x][y + i] = SHIP;
-          shipPosition[i][0] = x;
-          shipPosition[i][1] = y + i;
-          singleConflict = false;
-        }
-      }
-    } else {
-      if (x + i < HEIGHT) {
-        if (map[x][y + i] != SHIP) {
-          // map[x + i][y] = SHIP;
-          shipPosition[i][0] = x + i;
-          shipPosition[i][1] = y;
-          singleConflict = false;
-        }
-      }
-    }
-    hasConfict = hasConfict && !singleConflict;
-  }
+  bool hasConfict;
+  do {
+    hasConfict = false;
 
-  cout << "hasConfict: " << hasConfict << endl;
-
-  if (!hasConfict) {
+    pos = rand() % 2;
+    x = rand() % WIDTH;
+    y = rand() % HEIGHT;
     for (int i = 0; i < size; i++) {
-      map[shipPosition[i][0]][shipPosition[i][1]] = SHIP;
+      bool singleConflict = false;
+      int posX, posY;
+      if (pos == 0) {
+        posX = x;
+        posY = y + i;
+      } else {
+        posX = x + i;
+        posY = y;
+      }
+      if (posX >= HEIGHT || posY >= WIDTH) {
+        singleConflict = true;
+      } else if (map[posX][posY] == SHIP) {
+        singleConflict = true;
+      } else {
+        shipPosition[i][0] = posX;
+        shipPosition[i][1] = posY;
+      }
+      hasConfict = hasConfict || singleConflict;
     }
-  }
+  } while (hasConfict);
 
-  cout << "end...." << endl;
+  // cout << "x, y, pos, size: " << x << ", " << y << ", " << pos << ", " << size << endl;
+  for (int i = 0; i < size; i++) {
+    map[shipPosition[i][0]][shipPosition[i][1]] = SHIP;
+  }
 }
 
 
 // To check if a cannon hits a battleship.
-// Put the correct symbol on the map and return true if  a ship is hit.
+// Put the correct symbol on the map and return true if a ship is hit.
 // Note: repeated firing on the hit area of an already damaged ship is
 // considered as a miss and the symbol for the area should remain '*'.
 bool isHit(char map[][WIDTH], int col, int row) {
     //add your code here
+  cout << "isHit: c, r: " << col << ", " << row << endl;
+
+  // U -> *, true
+  // * -> *, false
+  // . -> x, false
+  bool isHit = false;
+  if (map[row][col] == SHIP) {
+    map[row][col] = HIT;
+    isHit = true;
+  } else if (map[row][col] == EMPTY) {
+    map[row][col] = MISS;
+  }
+  return isHit;
 }
 
 
@@ -140,6 +142,14 @@ bool isHit(char map[][WIDTH], int col, int row) {
 // It returns false otherwise.
 bool isGameOver(const char map[][WIDTH]) {
     //add your code here
+  for (int i = 0; i < HEIGHT; i++) {
+    for (int j = 0; j < WIDTH; j++) {
+      if (map[i][j] == SHIP) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 
@@ -152,19 +162,17 @@ int main() {
           map[row][col] = EMPTY;
 
     placeShip(map, 5);
-    // placeShip(map, 4);
-    // placeShip(map, 3);
-    // placeShip(map, 3);
-    // placeShip(map, 2);
+    placeShip(map, 4);
+    placeShip(map, 3);
+    placeShip(map, 3);
+    placeShip(map, 2);
 
     int fire_count = 0;
 
     char input;
     cout << "Are you playing in the debug/demo mode? (Y for yes; no Otherwise)" << endl;
-    // cin >> input;
-    input = 'Y';
+    cin >> input;
     bool debug = (input == 'Y');
-
 
     while (!isGameOver(map)) {
       printMap(map, debug);
