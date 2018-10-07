@@ -1,6 +1,6 @@
 /*
  * Lab 5 Skeleton
- 
+
 This lab implements a classic two-player battleship game. It helps you to practice the use of 2D array data structure and function, and you must use them in your code. You may download the demo program for Windows (updated) to try it out.
 
 The game runs as follows:
@@ -25,7 +25,7 @@ You can start with the given skeleton code. Read it carefully to understand the 
 
 void placeShip(char map[][WIDTH], int size);    // for item 3 as described above
 bool isHit(char map[][WIDTH], int col, int row); // for item 4
-bool isGameOver(const char map[][WIDTH]); 	// for item 5
+bool isGameOver(const char map[][WIDTH]);   // for item 5
 
 More details of the functions can be found in skeleton code.
 
@@ -51,24 +51,23 @@ const char MISS = 'x';
 //This function is to print the map. The first parameter is a 2D array that represents the
 //map. The second parameter check if it is in the debug mode.
 void printMap(const char map[][WIDTH], bool debug = true) {
-    cout << " ";
-    for (int i = 0; i < WIDTH; i++) {
-	cout << " " << i ;
-    }
+  cout << " ";
+  for (int i = 0; i < WIDTH; i++) {
+    cout << " " << i ;
+  }
+  cout << endl;
+
+  for (int i = 0; i < HEIGHT; i++) {
+    cout << i << " ";
+
+    for (int j = 0; j < WIDTH; j++) {
+      if (!debug && map[i][j] == SHIP)
+        cout << EMPTY << " ";
+      else
+        cout << map[i][j] << " ";
+      }
     cout << endl;
-
-    for (int i = 0; i < HEIGHT; i++) {
-	cout << i << " ";
-
-	for (int j = 0; j < WIDTH; j++) {
-	    if (!debug && map[i][j] == SHIP)
-		cout << EMPTY << " ";
-	    else
-		cout << map[i][j] << " ";
-	}
-
-	cout << endl;
-    }
+  }
 }
 
 // Place a ship of a particular size on the map.
@@ -78,6 +77,53 @@ void printMap(const char map[][WIDTH], bool debug = true) {
 // You can always assume the map has enough room to place the battle ship when the function is being called.
 void placeShip(char map[][WIDTH], int size) {
     //add your code here
+  int x = 0, y = 0;
+  int pos = rand() % (2);
+  x = rand() % (10);
+  y = rand() % (10);
+
+  x = 7;
+  y = 8;
+  pos = 1;
+
+  cout << "x, y, pos, size: " << x << ", " << y << ", " << pos << ", " << size << endl;
+
+  int shipPosition[size][2];
+
+  bool hasConfict = false;
+  for (int i = 0; i < size; i++) {
+    bool singleConflict = true;
+    if (pos == 0) {
+      if (y + i < WIDTH) {
+        if (map[x][y + i] != SHIP) {
+          // map[x][y + i] = SHIP;
+          shipPosition[i][0] = x;
+          shipPosition[i][1] = y + i;
+          singleConflict = false;
+        }
+      }
+    } else {
+      if (x + i < HEIGHT) {
+        if (map[x][y + i] != SHIP) {
+          // map[x + i][y] = SHIP;
+          shipPosition[i][0] = x + i;
+          shipPosition[i][1] = y;
+          singleConflict = false;
+        }
+      }
+    }
+    hasConfict = hasConfict && !singleConflict;
+  }
+
+  cout << "hasConfict: " << hasConfict << endl;
+
+  if (!hasConfict) {
+    for (int i = 0; i < size; i++) {
+      map[shipPosition[i][0]][shipPosition[i][1]] = SHIP;
+    }
+  }
+
+  cout << "end...." << endl;
 }
 
 
@@ -102,55 +148,55 @@ int main() {
 
     char map[HEIGHT][WIDTH];
     for (int row = 0; row < HEIGHT; row++)
-	for (int col = 0; col < WIDTH; col++)
-	    map[row][col] = EMPTY;
+      for (int col = 0; col < WIDTH; col++)
+          map[row][col] = EMPTY;
 
     placeShip(map, 5);
-    placeShip(map, 4);
-    placeShip(map, 3);
-    placeShip(map, 3);
-    placeShip(map, 2);
+    // placeShip(map, 4);
+    // placeShip(map, 3);
+    // placeShip(map, 3);
+    // placeShip(map, 2);
 
     int fire_count = 0;
 
     char input;
     cout << "Are you playing in the debug/demo mode? (Y for yes; no Otherwise)" << endl;
-    cin >> input;
+    // cin >> input;
+    input = 'Y';
     bool debug = (input == 'Y');
 
 
     while (!isGameOver(map)) {
-	printMap(map, debug);
+      printMap(map, debug);
 
-	int col, row;
-	cout << "\nPlease enter your col and row separated by a space: ";
-	cin >> col >> row;
+      int col, row;
+      cout << "\nPlease enter your col and row separated by a space: ";
+      cin >> col >> row;
 
-	if (col < 0 || col >= WIDTH || row < 0 || row >= HEIGHT) {
-	    cout << "Invalid coordinate, please enter again." << endl;
-	    continue;
-	}
+      if (col < 0 || col >= WIDTH || row < 0 || row >= HEIGHT) {
+          cout << "Invalid coordinate, please enter again." << endl;
+          continue;
+      }
 
-	if (isHit(map, col, row))
-	    cout << "It is a hit! " << endl << endl;
-	else
-	    cout << "It is a miss :( " << endl << endl;
+      if (isHit(map, col, row))
+          cout << "It is a hit! " << endl << endl;
+      else
+          cout << "It is a miss :( " << endl << endl;
 
-	fire_count++;
+      fire_count++;
     }
 
     cout << "Game over. You have fire " << fire_count
          << " cannons to destroy your enemy battleships." << endl;
 
     if (fire_count == 17)
-	cout << "Super! You make the impossible possible!" << endl;
-    else if (fire_count < 40)
-	cout << "Brilliant!" << endl;
-    else if (fire_count < 70)
-	cout << "Good shot!" << endl;
-    else
-	cout << "Improve your skill next time!" << endl;
+      cout << "Super! You make the impossible possible!" << endl;
+        else if (fire_count < 40)
+      cout << "Brilliant!" << endl;
+        else if (fire_count < 70)
+      cout << "Good shot!" << endl;
+        else
+      cout << "Improve your skill next time!" << endl;
 
     printMap(map);
-}
-
+  }
