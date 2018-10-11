@@ -22,25 +22,23 @@ int str_len(const char s[])
 
 
 
-void digits_to_barcode
-    (const char barcodes[][6], char input_string[], char output_barcode[2506]){
-        memset(output_barcode, '\0', 2506);
-        int s = str_len(input_string);
-        int sum = 0;
-        int a = 0;
-        for (int i = 0; i < s; i++){
-            a += (int)(input_string[s - 1 - i] - 48);
-        }
-        sum = sum + a;
+void digits_to_barcode (const char barcodes[][6], char input_string[], char output_barcode[2506]){
+    memset(output_barcode, '\0', 2506);
+    int s = str_len(input_string);
+    int sum = 0;
+    int a = 0;
+    for (int i = 0; i < s; i++) {
+        a += (int)(input_string[s - 1 - i] - 48);
+    }
+    sum = sum + a;
 
-        for(int j = 0; j < s; j ++){
-            int b = input_string[j] - 48;
-            strcat(output_barcode, barcodes[b]);
-            cout << "output_barcode = " << output_barcode << endl;
-        }
-        int c = (10 - sum % 10) % 10;
-        strcat(output_barcode, barcodes[c]);
-
+    for (int j = 0; j < s; j ++){
+        int b = input_string[j] - 48;
+        strcat(output_barcode, barcodes[b]);
+        cout << "output_barcode = " << output_barcode << endl;
+    }
+    int c = (10 - sum % 10) % 10;
+    strcat(output_barcode, barcodes[c]);
 }
 
 /*
@@ -51,44 +49,42 @@ void digits_to_barcode
 
 /* ADD YOUR CODE HERE */
 
-bool barcode_to_digits
-     (const char barcodes[][6], char input_string[2506], char digit_string[501]){
-
-         int len = str_len(input_string);
-         bool a[100];
-         char c[501];
-         char e[1];
-         int t = 0;
-         if(len == 0)
-             return false;
-         else if(len % 5 == 0 && len != 0){
-             for (int b = 0; b < (len / 5); b++) {
-                  for (int j = 0; j < 10; j++) {
-                     a[j] = true;
-                     for (int i = 0; i < 5; i++){
-                         if (input_string[i + 5 * b] != barcodes[j][i]) {
-                             a[j] = false;
-                         }
-                     }
-                      if(a[j] && b != len / 5 - 1){
-                         digit_string[b] = j + 48;
-                      }
-                      digit_string[len / 5 - 1] = NULL_CHAR;
-                      if(a[j] && b == len / 5 - 1){
-                          e[0] = j + 48;
-                      }
-                 }
-                 if(b < len / 5 - 1){
-                 t = t + (digit_string[b] - 48);
-                 }
-             }
-             if((t + (e[0] - 48)) % 10 != 0){
-                 return false;
-             }
-             return true;
-         }
+bool barcode_to_digits (const char barcodes[][6], char input_string[2506], char digit_string[501]) {
+    int len = str_len(input_string);
+    bool a[100];
+    char c[501];
+    char e[1];
+    int t = 0;
+    if (len == 0) {
         return false;
-     }
+    } else if (len % 5 == 0 && len != 0) {
+        for (int b = 0; b < (len / 5); b++) {
+            for (int j = 0; j < 10; j++) {
+                a[j] = true;
+                for (int i = 0; i < 5; i++) {
+                    if (input_string[i + 5 * b] != barcodes[j][i]) {
+                        a[j] = false;
+                    }
+                }
+                if (a[j] && b != len / 5 - 1) {
+                    digit_string[b] = j + 48;
+                }
+                digit_string[len / 5 - 1] = NULL_CHAR;
+                if (a[j] && b == len / 5 - 1) {
+                    e[0] = j + 48;
+                }
+            }
+            if (b < len / 5 - 1) {
+               t = t + (digit_string[b] - 48);
+            }
+        }
+        if ((t + (e[0] - 48)) % 10 != 0) {
+            return false;
+        }
+        return true;
+    }
+    return false;
+}
 /*
  * Function: main
  * You are NOT ALLOWED to change ANY CODE in this function
